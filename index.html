@@ -224,7 +224,7 @@ textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bot
 /* Vollbild-Ansichten */
 .full{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;animation:up .38s cubic-bezier(.2,.9,.25,1)}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-.fhead{position:sticky;top:0;z-index:5;padding-top:env(safe-area-inset-top,0px);background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.fhead{position:sticky;top:0;z-index:8;padding-top:env(safe-area-inset-top,0px);background:var(--glass);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
 .fhead .wrap{height:58px;display:flex;align-items:center;gap:14px}
 .xbtn{width:36px;height:36px;display:grid;place-items:center;color:var(--faint);flex:none}
 .xbtn svg{width:24px;height:24px}
@@ -265,7 +265,7 @@ textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bot
 /* Untere Leiste und Antwortblatt */
 .foot{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bg);border-top:2px solid var(--line);padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px))}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:7;max-height:82vh;display:flex;flex-direction:column;border-radius:24px 24px 0 0;background:var(--surface);border-top:2px solid var(--line);box-shadow:0 -10px 30px rgba(0,0,0,.12);animation:sheet .38s cubic-bezier(.2,.9,.25,1)}
-.sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 0 12px;flex:1;min-height:0}
+.sbody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 0 12px;flex:1;min-height:0;overscroll-behavior:contain}
 .sfoot{flex:none;border-top:2px solid var(--line);padding:10px 0 calc(12px + env(safe-area-inset-bottom,0px));background:var(--surface)}
 .sfoot .rate-h{margin:0 0 8px;font-size:.92rem}.sfoot .rate{margin-top:0}
 .quick{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -289,7 +289,14 @@ textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bot
 .prow .top em{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .prow .hint{font-size:.84rem;color:var(--muted);margin-top:4px;font-weight:700}
 @keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
-.sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--line2);margin:0 auto 12px}
+.sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--line2);margin:0 auto}
+.shandle{flex:none;position:relative;padding:10px 0 6px;touch-action:none;cursor:grab}
+.shide{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:4px;display:flex;align-items:center;gap:4px;font-weight:800;font-size:.82rem;color:var(--muted);padding:6px 8px;border-radius:10px}
+.sheet.drag{transition:none!important;animation:none}
+.sheet.back{transition:transform .25s cubic-bezier(.2,.9,.25,1)}
+.dim{position:fixed;inset:0;z-index:6;background:rgba(10,12,18,.18);animation:fade .25s}
+.step.sl{animation:slideL .35s cubic-bezier(.2,.9,.25,1)}
+@keyframes slideL{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
 .sheet h3{font-size:1.25rem;display:flex;align-items:center;gap:10px}
 .sheet h3 .badge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--acc)}
 .sheet h3 .badge svg{width:20px;height:20px}
@@ -494,7 +501,8 @@ textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bot
   <div class="fhead"><div class="wrap"><button class="xbtn" id="lsClose" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div class="pbar"><i id="lsBar"></i></div><button class="navb" id="lsPrev" aria-label="Vorherige Frage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button><span class="n" id="lsN"></span><button class="navb" id="lsNext" aria-label="Nächste Frage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></button></div></div>
   <div class="wrap fbody" id="lsBody"></div>
   <div class="foot" id="lsFoot"><div class="wrap"><div class="quick" id="lsQuick" hidden></div><button class="b3" id="lsMain">Antwort zeigen</button></div></div>
-  <div class="sheet" id="lsSheet" hidden><div class="sbody" id="lsSB"><div class="wrap" id="lsSheetIn"></div></div><div class="sfoot"><div class="wrap" id="lsRate"></div></div></div>
+  <div class="dim" id="lsDim" hidden></div>
+  <div class="sheet" id="lsSheet" hidden><div class="shandle" id="lsHandle"><div class="grab"></div><button class="shide" id="lsHide">Ausblenden <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div><div class="sbody" id="lsSB"><div class="wrap" id="lsSheetIn"></div></div><div class="sfoot"><div class="wrap" id="lsRate"></div></div></div>
 </section>
 
 <!-- Fortschritt -->
@@ -1363,7 +1371,7 @@ function startLesson(items,label,single,opt){
   if(!items.length){toast("Gerade nichts zu üben");return}
   opt=opt||{};let list=items.slice(),kind=list.map(()=>opt.review?"rev":"");
   if(opt.path){const ids=new Set(list.map(x=>x.id));const due=dueList().filter(x=>!ids.has(x.id)).slice(0,2);due.forEach((x,k)=>{const pos=Math.min(list.length,2+k*2);list.splice(pos,0,x);kind.splice(pos,0,"rev")})}
-  L={items:list,kind,i:0,label,single,xp:0,t0:Date.now(),rated:{},again:new Set()};
+  L={dir:1,items:list,kind,i:0,label,single,xp:0,t0:Date.now(),rated:{},again:new Set()};
   $("lesson").hidden=false;document.body.style.overflow="hidden";$("lesson").scrollTop=0;renderStep();
 }
 function closeLesson(){stopAll();$("lesson").hidden=true;document.body.style.overflow="";render()}
@@ -1374,11 +1382,11 @@ function renderStep(){
   const it=L.items[L.i],fig=figureFor(it),kd=L.kind[L.i];dlg=dialogOf(it);dstep=0;
   $("lsBar").style.width=(L.i/L.items.length*100)+"%";$("lsN").textContent=L.items.length>1?(L.i+1)+" / "+L.items.length:"";
   $("lsPrev").hidden=$("lsNext").hidden=L.items.length<2;$("lsPrev").disabled=L.i===0;
-  $("lsSheet").hidden=true;$("lsFoot").hidden=false;
+  hideSheet(true);
   const qk=$("lsQuick");qk.hidden=false;qk.innerHTML='<span>Schon sicher?</span>'+[1,2,3].map(n=>'<button class="q'+n+(lv(it)===n?' on':'')+'" data-l="'+n+'">'+["","Unsicher","Geht so","Sitzt"][n]+'</button>').join("");
   qk.querySelectorAll("button").forEach(b=>b.onclick=()=>{if(b.classList.contains("on")){setMark(it,0);qk.querySelectorAll("button").forEach(x=>x.classList.remove("on"));toast("Frage ist wieder offen");return}rate(it,+b.dataset.l,b)});
   const was=lv(it)?["","Unsicher","Geht so","Sitzt"][lv(it)]:"";
-  let h='<div class="step"><div class="kicker">'+(kd==="rev"?'<span style="color:var(--no)">Wiederholung</span> · ':kd==="again"?'<span style="color:var(--no)">Nochmal</span> · ':'')+esc(dlg?"Rollenspiel · "+it.cat:it.cat)+(was?' <span style="color:var(--muted)">· zuletzt '+was+'</span>':'')+'</div>';
+  let h='<div class="step'+(L.dir<0?' sl':'')+'"><div class="kicker">'+(kd==="rev"?'<span style="color:var(--no)">Wiederholung</span> · ':kd==="again"?'<span style="color:var(--no)">Nochmal</span> · ':'')+esc(dlg?"Rollenspiel · "+it.cat:it.cat)+(was?' <span style="color:var(--muted)">· zuletzt '+was+'</span>':'')+'</div>';
   if(dlg){h+='<h2 style="font-size:1.3rem;margin-bottom:14px">'+esc(title(it))+'</h2><div class="chat" id="chat"></div>'}
   else{
     h+='<div class="scene"><div class="fig">'+person(fig.o)+'</div><div class="say card3"><small>'+esc(fig.name)+' · '+esc(fig.role)+'</small>'+esc(title(it))+'</div></div>';
@@ -1408,7 +1416,7 @@ function stepChat(){
 function showSheet(it,afterDialog){
   stopAll();
   const z=zustOf(it),Ls=listOf(it);
-  let h='<div class="grab"></div>';
+  let h='';
   if(!afterDialog){
     h+='<h3><span class="badge">'+ICON.eye+'</span>'+(z?"So würde ich reagieren":"Mögliche Antwort")+'</h3><p class="note">Nur eine mögliche Antwort. Formuliere sie in deinen Worten und mit eigenen Beispielen.</p>';
     if(z)h+='<div class="zbox"><b>Wer ist zuständig</b>'+fmt(z)+'</div>';
@@ -1418,7 +1426,7 @@ function showSheet(it,afterDialog){
   if(it.links)h+='<div class="qlinks">'+it.links.map(l=>'<a href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a>').join("")+'</div>';
   h+='<span class="lbl">Meine Lernversion</span><textarea class="memo" id="memo" placeholder="Was du mitnehmen willst">'+esc(state.memo[it.id]||"")+'</textarea><button class="copy" id="copyBtn">Musterantwort als Vorlage übernehmen</button>';
   $("lsRate").innerHTML='<div class="rate-h">Wie sicher sitzt die Antwort?</div><div class="rate"><button class="b3 no" data-l="1">Unsicher</button><button class="b3 mid" data-l="2">Geht so</button><button class="b3 ok" data-l="3">Sitzt</button></div>';
-  $("lsSheetIn").innerHTML=h;$("lsSheet").hidden=false;$("lsFoot").hidden=true;$("lsSB").scrollTop=0;
+  $("lsSheetIn").innerHTML=h;openSheet();$("lsSB").scrollTop=0;
   $("memo").addEventListener("input",e=>{state.memo[it.id]=e.target.value;save()});
   $("copyBtn").onclick=()=>{const d=dialogOf(it);const base=d?d.filter(x=>x[0]==="e").map(x=>"- "+fill(x[1])).join("\n"):(Ls?Ls.map(x=>"- "+fill(x)).join("\n"):fill(answerOf(it)));const cur=$("memo").value.trim();$("memo").value=cur?cur+"\n\n"+base:base;state.memo[it.id]=$("memo").value;save();toast("Vorlage übernommen")};
   $("lsRate").querySelectorAll(".rate .b3").forEach(b=>b.onclick=()=>rate(it,+b.dataset.l,b));
@@ -1430,10 +1438,33 @@ function rate(it,n,btn){
   const unit=UNITS.find(u=>u.cat===it.cat);if(unit){const key=state.emp+"|"+unit.cat;if(unit.items.every(x=>lv(x)===3)&&!state.cel[key]){state.cel[key]=1;save();L.unitDone=unit.cat}}
   setTimeout(()=>{L.i++;if(L.i<L.items.length)renderStep();else finishLesson()},260);
 }
-$("lsPrev").onclick=()=>{if(L&&L.i>0&&!L.fin){L.i--;renderStep()}};
-$("lsNext").onclick=()=>{if(!L||L.fin)return;L.i++;if(L.i<L.items.length)renderStep();else finishLesson()};
+function goPrev(){if(L&&L.i>0&&!L.fin){L.i--;L.dir=-1;renderStep()}}
+function goNext(){if(!L||L.fin||L.items.length<2)return;L.dir=1;L.i++;if(L.i<L.items.length)renderStep();else finishLesson()}
+$("lsPrev").onclick=goPrev;$("lsNext").onclick=goNext;
+function openSheet(){const sh=$("lsSheet");sh.style.transform="";sh.classList.remove("back","drag");sh.hidden=false;$("lsDim").hidden=false;$("lsFoot").hidden=true}
+function hideSheet(now){const sh=$("lsSheet");const done=()=>{sh.hidden=true;sh.style.transform="";sh.classList.remove("back");$("lsDim").hidden=true;if(L&&!L.fin)$("lsFoot").hidden=false};
+  if(now||sh.hidden){done();return}sh.classList.add("back");sh.style.transform="translateY(100%)";setTimeout(done,240)}
+$("lsHide").onclick=()=>hideSheet();$("lsDim").onclick=()=>hideSheet();
+/* Antwortblatt nach unten ziehen */
+(function(){const sh=$("lsSheet"),sb=$("lsSB");let y0=null,dy=0,fromBody=false;
+  function start(e,body){if(body&&sb.scrollTop>0)return;y0=e.touches[0].clientY;dy=0;fromBody=body;sh.classList.add("drag")}
+  function move(e){if(y0===null)return;dy=e.touches[0].clientY-y0;if(fromBody&&dy<0){y0=null;sh.classList.remove("drag");sh.style.transform="";return}if(dy>0){sh.style.transform="translateY("+dy+"px)";if(e.cancelable)e.preventDefault()}}
+  function end(){if(y0===null)return;y0=null;sh.classList.remove("drag");if(dy>90)hideSheet();else{sh.classList.add("back");sh.style.transform="";setTimeout(()=>sh.classList.remove("back"),260)}}
+  $("lsHandle").addEventListener("touchstart",e=>start(e,false),{passive:true});
+  sb.addEventListener("touchstart",e=>start(e,true),{passive:true});
+  [$("lsHandle"),sb].forEach(el=>{el.addEventListener("touchmove",move,{passive:false});el.addEventListener("touchend",end);el.addEventListener("touchcancel",end)});
+  /* Maus zum Testen am Rechner */
+  $("lsHandle").addEventListener("mousedown",e=>{y0=e.clientY;dy=0;fromBody=false;sh.classList.add("drag");
+    const mm=ev=>{dy=ev.clientY-y0;if(dy>0)sh.style.transform="translateY("+dy+"px)"},mu=()=>{removeEventListener("mousemove",mm);removeEventListener("mouseup",mu);end()};addEventListener("mousemove",mm);addEventListener("mouseup",mu)});
+})();
+/* Zwischen Fragen wischen */
+(function(){const el=$("lsBody");let x0=null,y0=0;
+  el.addEventListener("touchstart",e=>{if(e.target.closest("textarea,input")||!$("lsSheet").hidden){x0=null;return}x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+  el.addEventListener("touchend",e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.6){if(dx<0)goNext();else goPrev()}});
+})();
 function finishLesson(){
-  stopAll();$("lsBar").style.width="100%";$("lsSheet").hidden=true;L.fin=true;$("lsQuick").hidden=true;$("lsPrev").hidden=$("lsNext").hidden=true;$("lsN").textContent="";
+  stopAll();$("lsBar").style.width="100%";hideSheet(true);L.fin=true;$("lsQuick").hidden=true;$("lsPrev").hidden=$("lsNext").hidden=true;$("lsN").textContent="";
   if(!L.single){state.lc++;save()}
   const uniq=[...new Set(L.items.map(x=>x.id))],later=uniq.filter(id=>state.sr[id]).length;
   const bonus=L.items.length>1&&Object.keys(L.rated).length?10:0;if(bonus){L.xp+=bonus;addXP(bonus)}
