@@ -206,7 +206,21 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--r);background:var(--surface);padding:14px;font-size:16px;line-height:1.5;resize:vertical;font-weight:600}
 .legal{text-align:center;color:var(--muted);font-size:.84rem;margin:26px 0 0}
 .count{display:flex;align-items:center;gap:14px;padding:16px}
-.count .num{font-size:2rem;font-weight:900;color:var(--acc);line-height:1}
+.tl{display:grid;gap:12px}
+.tl .yr small{display:block;font-size:.76rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.tl .bar{display:flex;gap:3px}
+.tl .bar span{border-radius:9px;padding:7px 4px;font-size:.72rem;font-weight:900;text-align:center;line-height:1.15;color:#fff;min-width:0;overflow:hidden}
+.tl .T{background:var(--acc)}.tl .P{background:var(--ok)}.tl .X{background:var(--gold);color:#1E2330!important}
+.tl .mon{display:flex;justify-content:space-between;font-size:.68rem;color:var(--faint);font-weight:800;margin-top:3px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.facts div{background:var(--bg);border-radius:12px;padding:8px 6px;text-align:center}
+.facts b{display:block;font-size:1.15rem;font-weight:900;color:var(--acc)}
+.facts span{font-size:.74rem;font-weight:800;color:var(--muted)}
+.count+.count{border-top:2px solid var(--line)}
+.count .emp{display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.count .emp i{width:9px;height:9px;border-radius:50%}
+.count .clr{font-weight:800;font-size:.85rem;color:var(--muted);margin-left:8px}
+.count .num{min-width:44px;text-align:center;font-size:2rem;font-weight:900;color:var(--acc);line-height:1}
 .count .t{flex:1}
 .count input{border:2px solid var(--line);border-radius:12px;background:var(--bg);padding:8px 10px;font-size:15px;max-width:100%}
 
@@ -458,12 +472,16 @@ textarea.box{width:100%;min-height:150px;border:2px solid var(--line);border-bot
   <div class="wrap">
     <h1 class="ptitle">Nachlesen</h1>
     <p class="psub">Termin, Checkliste, wichtige Seiten und deine Notizen.</p>
-    <div class="sec"><h3>Dein Gesprächstermin</h3>
-      <div class="card3 count"><span class="num" id="cdBig">?</span><div class="t"><b id="cdSub">Termin eintragen</b><div style="margin-top:6px"><input type="datetime-local" id="dateIn" aria-label="Gesprächstermin"></div></div></div>
+    <div class="sec"><h3>Deine Gesprächstermine</h3>
+      <div class="card3" id="dateBox"></div>
     </div>
     <div class="sec"><h3>Am Gesprächstag <span id="chkN"></span></h3>
       <div class="card3" id="placeBox"></div>
       <div class="card3" id="checkBox" style="margin-top:10px"></div>
+    </div>
+    <div class="sec"><h3>Dein Studium im Überblick</h3>
+      <div class="card3" style="padding:14px" id="studyBox"></div>
+      <div class="card3" id="studyLinks" style="margin-top:10px"></div>
     </div>
     <div class="sec"><h3 id="linksH">Zum Nachschauen</h3><div class="card3" id="empLinks"></div></div>
     <div class="sec"><h3>Gesetze im Wortlaut</h3><div class="card3" id="lawLinks"></div></div>
@@ -1055,13 +1073,56 @@ window.QUIZ = [
  {e:"both",q:"Wer beaufsichtigt die Stadt Kassel?",o:["Der Landkreis Kassel","Das Regierungspräsidium Kassel","Der Bund","Niemand"],c:1,x:"Als kreisfreie Stadt das Regierungspräsidium Kassel."}
 ];
 
+/* Studium Public Administration an der HöMS. Quelle ist das Modulbuch und der Studienverlaufsplan ab Wintersemester 2026/2027. */
+window.STUDY_LINKS = [
+ ["Studiengang Public Administration","https://hoems.hessen.de/studium/public-administration","HöMS, alle Unterlagen zum Studium"],
+ ["Studienverlaufsplan (PDF)","https://hoems.hessen.de/sites/hoems.hessen.de/files/2026-09/anlage_2_zur_studienordnung_vom_01.09.2026-studienverlaufsplan.pdf","Welches Fach in welchem Semester"],
+ ["Modulbuch (PDF)","https://hoems.hessen.de/sites/hoems.hessen.de/files/2026-09/anlage_3_zur_studienordnung_vom_01.09.2026-modulbuch.pdf","Alle Module, Praxisphasen und Prüfungen"]
+];
+window.STUDY = {cat:"Das Studium", emp:"both", items:[
+ {id:"s1", q:"Wie ist das Studium Public Administration aufgebaut?",
+  a:"Es ist ein dreijähriges duales Studium mit sechs Semestern, Abschluss Bachelor of Arts. Theorie und Praxis wechseln sich ab. Die Theorie findet an der Hessischen Hochschule für öffentliches Management und Sicherheit in Kassel statt, die Praxis {bei}. Insgesamt gibt es 180 Credits in 17 Modulen, davon 15 Fachtheorie-Module, ein Praxismodul mit fünf Praktika und das Thesis-Modul. Das erste Semester ist komplett Theorie, danach wechseln sich etwa drei Monate Hochschule und drei Monate Praxis ab.",
+  t:"Die Zahlen 6 Semester, 180 Credits und fünf Praktika kurz nennen zu können, zeigt, dass du dich vorbereitet hast.",
+  links:[["Studienverlaufsplan der HöMS","https://hoems.hessen.de/sites/hoems.hessen.de/files/2026-09/anlage_2_zur_studienordnung_vom_01.09.2026-studienverlaufsplan.pdf"],["Studiengang bei der HöMS","https://hoems.hessen.de/studium/public-administration"]]},
+ {id:"s2", q:"Welche Fächer erwarten Sie im Studium?",
+  list:["Verwaltungshandeln, also Verwaltungsrecht, Kommunalrecht, Dienstrecht, Privatrecht und Sozialrecht","Ökonomisches Handeln mit Betriebswirtschaftslehre, öffentlicher Finanzwirtschaft, Controlling und Volkswirtschaftslehre","Rahmenbedingungen der Verwaltung, also Politologie sowie Staats- und Verfassungsrecht","Soziologie und Psychologie, dazu Sozialkompetenz und interkulturelle Kompetenz","Methoden wie wissenschaftliches Arbeiten, juristische Methoden, Rhetorik, empirische Sozialforschung und ein studentisches Projekt","Im fünften Semester Wahlpflichtmodule zur Vertiefung"],
+  t:"Den größten Anteil hat das Recht. Wenn du sagen kannst, welches Fach dich besonders reizt, wirkt das gleich viel persönlicher."},
+ {id:"s3", q:"Wie sind die Praxisphasen im Studium verteilt?",
+  list:["Praktikum 1 im 2. Semester, 3 Monate, meist allgemeine Verwaltung","Praktikum 2 im 3. Semester, 3 Monate, meist Finanzmanagement","Praktikum 3 im 4. und 5. Semester, 6 Monate, etwa Personalmanagement, Leistungsverwaltung oder Ordnungs- und Eingriffsverwaltung, mit Erfahrungsbericht am Ende","Praktikum 4 im 6. Semester, 3 Monate, Vertiefung und Bachelorthesis","Praktikum 5 im 6. Semester, 3 Monate, Berufseinführung bis zum Kolloquium"],
+  t:"Die Bereiche können je nach Ausbildungsbehörde abweichen. Gut ist ein Satz, welchen Bereich du gern kennenlernen möchtest."},
+ {id:"s4", q:"Wie läuft die Bachelorarbeit ab?",
+  a:"Im fünften Semester schreibe ich ein Exposé zur Thesis. Im sechsten Semester bearbeite ich dann während Praktikum 4 innerhalb von drei Monaten eine Fragestellung aus der Praxis wissenschaftlich. Betreut werde ich von Lehrenden der Hochschule und von der Praxis. Danach verteidige ich die Arbeit im Kolloquium, einer mündlichen Einzelprüfung von 45 Minuten. Thesis und Kolloquium zählen zusammen 20 Prozent der Endnote.",
+  t:"Wenn du schon ein mögliches Thema aus deiner Ausbildung im Kopf hast, nenne es. Das zeigt Eigeninitiative."},
+ {id:"s5", q:"Wie setzt sich die Abschlussnote zusammen?",
+  a:"Die 15 Fachtheorie-Module zählen 70 Prozent, die Bachelorthesis mit Kolloquium 20 Prozent und das Praxismodul 10 Prozent. Geprüft wird zum Beispiel mit Klausuren, Hausarbeiten, Präsentationen und zentralen mündlichen Prüfungen. Die Praxis wird über einen Erfahrungsbericht am Ende von Praktikum 3 bewertet.",
+  t:"Daraus folgt, dass die Theorie das meiste Gewicht hat. Ein Satz dazu, wie du regelmäßig lernst, passt hier gut."},
+ {id:"s6", q:"Welche Wahlpflichtbereiche gibt es und was würde Sie interessieren?",
+  a:"Im fünften Semester wähle ich einen von zwei Wahlpflichtbereichen. Der Bereich Recht und Soziale Sicherung vertieft die Rechtsgebiete. Der Bereich Soziales, Ökonomie, Politik und Verwaltungsinformatik geht in Wirtschaft, Politik und Digitalisierung. [Mich reizt eher Recht und Soziale Sicherung, weil mir in der Ausbildung die Arbeit mit Gesetzen und Bescheiden liegt.]",
+  t:"Hier gibt es kein richtig oder falsch. Wichtig ist eine kurze Begründung mit Bezug zu deiner Erfahrung."},
+ {id:"s7", q:"Auf welches Fach freuen Sie sich und wovor haben Sie Respekt?",
+  a:"Ich freue mich besonders auf [Verwaltungsrecht und Kommunalrecht], weil ich vieles davon aus der Ausbildung im Alltag kenne und jetzt die Hintergründe verstehen möchte. Respekt habe ich vor [den ökonomischen Fächern wie Kosten- und Wirtschaftlichkeitsrechnung], weil ich dort weniger Vorwissen habe. Deshalb plane ich, früh mit dem Lernen anzufangen und Lerngruppen zu nutzen.",
+  t:"Ehrlich bleiben, aber immer mit einem Plan, wie du die Schwäche angehst."},
+ {id:"s8", q:"Was wissen Sie über die Hochschule?",
+  a:"Die Hessische Hochschule für öffentliches Management und Sicherheit bildet für Polizei und Verwaltung in Hessen aus. Sie hat Standorte in Gießen, Kassel, Mühlheim und Wiesbaden. Für mich wäre der Campus Kassel zuständig. Das Studium besteht etwa zur Hälfte aus Kontaktstudium in Präsenz oder online, dazu kommen begleitetes Studium und Selbststudium.",
+  t:"Wer den Namen der Hochschule vollständig nennen kann, punktet. Die Abkürzung ist HöMS.",
+  links:[["Studiengang bei der HöMS","https://hoems.hessen.de/studium/public-administration"]]}
+]};
+window.STUDY_QUIZ = [
+ {e:"both",q:"Wie viele Credits hat das Studium Public Administration?",o:["120","180","210","240"],c:1,x:"180 Credits in sechs Semestern."},
+ {e:"both",q:"Wie lange dauert Praktikum 3?",o:["3 Monate","4 Monate","6 Monate","9 Monate"],c:2,x:"Sechs Monate im 4. und 5. Semester, mit Erfahrungsbericht am Ende."},
+ {e:"both",q:"Wie viele Praktika gehören zum Studium?",o:["3","4","5","6"],c:2,x:"Fünf Praktika vom 2. bis zum 6. Semester."},
+ {e:"both",q:"Wie viel zählt die Fachtheorie in der Endnote?",o:["50 Prozent","60 Prozent","70 Prozent","80 Prozent"],c:2,x:"70 Prozent Fachtheorie, 20 Prozent Thesis mit Kolloquium, 10 Prozent Praxis."},
+ {e:"both",q:"Wie lange dauert das Kolloquium zur Bachelorthesis?",o:["20 Minuten","30 Minuten","45 Minuten","90 Minuten"],c:2,x:"Eine mündliche Einzelprüfung von 45 Minuten."},
+ {e:"both",q:"Welches Semester ist komplett Theorie?",o:["Das 1. Semester","Das 3. Semester","Das 5. Semester","Keines"],c:0,x:"Das erste Semester findet vollständig an der Hochschule statt."}
+];
+
 </script>
 <script>
 (function(){
 "use strict";
 /* ---------- Daten ---------- */
 (function(){const D=window.DATA,X=window.EXTRA,idx=n=>D.findIndex(c=>c.cat===n);
- D.unshift(...X.before);D.splice(idx("Bürgeranliegen")+1,0,...X.afterBuerger);D.splice(idx("Persönlichkeit"),0,...X.beforePers);})();
+ D.unshift(...X.before);if(window.STUDY)D.splice(1,0,window.STUDY);if(window.STUDY_QUIZ)QUIZ.push(...window.STUDY_QUIZ);D.splice(idx("Bürgeranliegen")+1,0,...X.afterBuerger);D.splice(idx("Persönlichkeit"),0,...X.beforePers);})();
 const CUSTOM_CAT="Eigene Fragen";
 const MSG="Hab dich lieb. Ich glaube an dich. Viel Erfolg!";
 const DAILY={6:"Du schaffst das!",5:"Ich denke an dich.",4:"Hab dich lieb.",3:"Ich bin stolz auf dich.",2:"Ich glaube an dich.",1:"Morgen ist dein Tag. Du schaffst das!"};
@@ -1077,7 +1138,7 @@ const XPR={1:5,2:8,3:10},GOAL=50,LESSON=5;
 /* ---------- Speicher ---------- */
 const KEY="kassel-training-v1",OLD="rp-kassel-training-v1";
 function norm(s){s=s||{};return {v:3,emp:s.emp||"lk",lvl:s.lvl||{},notes:s.notes||{},memo:s.memo||{},cel:s.cel||{},best:s.best||{},
-  xp:s.xp||0,days:s.days||{},date:s.date||"",hideMsgDay:s.hideMsgDay||"",morningDay:s.morningDay||"",after:s.after||"",
+  xp:s.xp||0,days:s.days||{},dates:s.dates||(s.date?{[s.emp||"lk"]:s.date}:{}),hideMsgDay:s.hideMsgDay||"",morningDay:s.morningDay||"",after:(s.after&&typeof s.after==="object")?s.after:(s.after?{[s.emp||"lk"]:s.after}:{}),
   free:s.free||"",custom:Array.isArray(s.custom)?s.custom:[],check:s.check||{},checkExtra:Array.isArray(s.checkExtra)?s.checkExtra:[],
   mockN:s.mockN||8,sr:s.sr||{},lc:s.lc||0,lastUnit:s.lastUnit||"",mockVoice:s.mockVoice!==false,mockOpenOnly:!!s.mockOpenOnly,finnPhone:s.finnPhone||"",view:s.view||"path"}}
 let state=norm();
@@ -1239,8 +1300,9 @@ function build(){
 function addXP(n,el){state.xp+=n;const k=dayKey();state.days[k]=(state.days[k]||0)+n;save();renderTop();
   if(el&&el.getBoundingClientRect){const r=el.getBoundingClientRect(),f=document.createElement("div");f.className="xpfly";f.textContent="+"+n+" XP";f.style.left=(r.left+r.width/2)+"px";f.style.top=(r.top-10)+"px";document.body.appendChild(f);setTimeout(()=>f.remove(),1000)}}
 function streak(){let n=0;const d=new Date();if(!state.days[dayKey(d)])d.setDate(d.getDate()-1);while(state.days[dayKey(d)]){n++;d.setDate(d.getDate()-1)}return n}
-function interview(){return state.date?new Date(state.date):null}
-function daysLeft(){const d=interview();if(!d)return null;const day=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate());return Math.round((day(d)-day(new Date()))/864e5)}
+function interview(e){const v=state.dates[e||state.emp];return v?new Date(v):null}
+function focusEmp(){const now=new Date();let best=null;["lk","st"].forEach(e=>{const d=interview(e);if(!d)return;const dl=daysLeft(e);if(dl<-14)return;const score=d>=now||dl===0?dl:1000-dl;if(best===null||score<best.s)best={e,s:score}});return best?best.e:state.emp}
+function daysLeft(e){const d=interview(e);if(!d)return null;const day=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate());return Math.round((day(d)-day(new Date()))/864e5)}
 function renderTop(){
   document.documentElement.setAttribute("data-emp",state.emp);
   $("empLk").setAttribute("aria-pressed",state.emp==="lk");$("empSt").setAttribute("aria-pressed",state.emp==="st");
@@ -1355,7 +1417,7 @@ $("empLk").onclick=()=>{state.emp="lk";save();build();render()};
 $("empSt").onclick=()=>{state.emp="st";save();build();render()};
 
 /* ---------- Nachricht von Finn ---------- */
-function finnLine(){const left=daysLeft(),d=interview(),before=d&&new Date()<d;if(left!==null&&DAILY[left])return DAILY[left];if(left===0&&before)return TODAY_LINE;if(d&&!before&&left>-14)return AFTER_LINE;return MSG}
+function finnLine(){const fe=focusEmp(),left=daysLeft(fe),d=interview(fe),before=d&&new Date()<d;if(left!==null&&DAILY[left])return DAILY[left];if(left===0&&before)return TODAY_LINE;if(d&&!before&&left>-14)return AFTER_LINE;return MSG}
 function renderMsg(){$("msgText").textContent=finnLine();$("msgCard").hidden=state.hideMsgDay===dayKey();$("msgAv").innerHTML=finn("happy")}
 $("msgClose").onclick=()=>{state.hideMsgDay=dayKey();save();$("msgCard").hidden=true};
 
@@ -1580,12 +1642,14 @@ $("cAdd").onclick=()=>{const q=$("cQ").value.trim();if(!q){toast("Bitte eine Fra
 /* ---------- Nachlesen ---------- */
 function linkRow(l,ic){return '<a class="li" href="'+l[1]+'" target="_blank" rel="noopener"><span class="ic">'+(ic||ICON.link)+'</span><span class="t"><b>'+esc(l[0])+'</b><small>'+esc(l[2])+'</small></span>'+ICON.ext+'</a>'}
 function renderRead(){
-  const d=interview(),dl=daysLeft();
-  if(!d){$("cdBig").textContent="?";$("cdSub").textContent="Termin eintragen, dann zählt die App die Tage"}
-  else{const t=d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}),ds=d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"short"});
-    $("cdBig").textContent=dl>1?dl:dl===1?"1":dl===0&&new Date()<d?"0":"✓";
-    $("cdSub").textContent=dl>1?"Tage bis zum Gespräch am "+ds+" um "+t:dl===1?"Morgen um "+t+" Uhr":dl===0&&new Date()<d?"Heute um "+t+" Uhr. Viel Erfolg!":"Das Gespräch ist vorbei"}
-  if(d){const p=n=>String(n).padStart(2,"0");$("dateIn").value=d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())}
+  const p2=n=>String(n).padStart(2,"0");
+  $("dateBox").innerHTML=["lk","st"].map(e=>{const d=interview(e),dl=daysLeft(e);let big="?",sub="Termin eintragen, dann zählt die App die Tage";
+    if(d){const t=d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}),ds=d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"short"}),before=new Date()<d;
+      big=dl>1?dl:dl===1?"1":dl===0&&before?"0":"✓";sub=dl>1?"Tage bis zum Gespräch am "+ds+" um "+t:dl===1?"Morgen um "+t+" Uhr":dl===0&&before?"Heute um "+t+" Uhr. Viel Erfolg!":"Gespräch am "+ds+" ist vorbei"}
+    const val=d?d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())+"T"+p2(d.getHours())+":"+p2(d.getMinutes()):"";
+    return '<div class="count"><span class="num" style="color:var(--'+e+')">'+big+'</span><div class="t"><span class="emp"><i style="background:var(--'+e+')"></i>'+EMP[e].name+'</span><b>'+sub+'</b><div style="margin-top:6px;display:flex;align-items:center;flex-wrap:wrap;gap:6px"><input type="datetime-local" data-e="'+e+'" value="'+val+'" aria-label="Gesprächstermin '+EMP[e].name+'">'+(d?'<button class="clr" data-c="'+e+'">Entfernen</button>':'')+'</div></div></div>'}).join("");
+  $("dateBox").querySelectorAll("input[data-e]").forEach(inp=>inp.addEventListener("change",()=>{if(!inp.value)return;const e=inp.dataset.e;state.dates[e]=inp.value;delete state.after[e];state.morningDay="";save();renderRead();renderTop();toast("Termin "+EMP[e].short+" gespeichert")}));
+  $("dateBox").querySelectorAll("[data-c]").forEach(bt=>bt.onclick=()=>{const e=bt.dataset.c;delete state.dates[e];delete state.after[e];save();renderRead();renderTop();toast("Termin entfernt")});
   const P=PLACE[state.emp];
   $("placeBox").innerHTML='<a class="li" href="https://maps.apple.com/?q='+encodeURIComponent(P.name+", "+P.addr)+'" target="_blank" rel="noopener"><span class="ic">'+ICON.pin+'</span><span class="t"><b>'+esc(P.name)+'</b><small>'+esc(P.addr)+'</small></span>'+ICON.ext+'</a><a class="li" href="tel:'+P.telR+'"><span class="ic">'+ICON.phone+'</span><span class="t"><b>Zentrale anrufen</b><small>'+esc(P.tel)+', falls etwas dazwischenkommt</small></span></a>';
   const all=CHECK.concat(state.checkExtra.map(x=>[x.id,x.t,1]));const n=all.filter(x=>state.check[x[0]]).length;$("chkN").textContent="· "+n+" / "+all.length;
@@ -1593,10 +1657,20 @@ function renderRead(){
   $("checkBox").querySelectorAll(".li").forEach(b=>b.onclick=e=>{const del=e.target.closest("[data-del]");if(del){state.checkExtra=state.checkExtra.filter(x=>x.id!==del.dataset.del);delete state.check[del.dataset.del];save();renderRead();return}const k=b.dataset.k;state.check[k]=!state.check[k];save();renderRead()});
   $("chkAdd").onclick=()=>{const v=$("chkIn").value.trim();if(!v)return;state.checkExtra.push({id:"x"+Date.now(),t:v});save();renderRead()};
   $("chkIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("chkAdd").click()});
+  const seg=(k,m,t)=>'<span class="'+k+'" style="flex:'+m+'">'+t+'</span>';
+  $("studyBox").innerHTML='<div class="tl">'+
+   '<div class="yr"><small>1. Studienjahr · Semester 1 und 2</small><div class="bar">'+seg("T",6,"Hochschule")+seg("P",3,"Praktikum 1")+seg("T",3,"Hochschule")+'</div></div>'+
+   '<div class="yr"><small>2. Studienjahr · Semester 3 und 4</small><div class="bar">'+seg("T",3,"Hochschule")+seg("P",3,"Praktikum 2")+seg("T",3,"Hochschule")+seg("P",3,"Praktikum 3")+'</div></div>'+
+   '<div class="yr"><small>3. Studienjahr · Semester 5 und 6</small><div class="bar">'+seg("P",3,"Praktikum 3")+seg("T",3,"Hochschule")+seg("X",3,"Thesis")+seg("P",3,"Praktikum 5")+'</div><div class="mon"><span>Sep</span><span>Dez</span><span>Mär</span><span>Jun</span><span>Aug</span></div></div>'+
+   '</div><div class="legend" style="margin-top:10px"><span style="--c:var(--acc)">Theorie an der HöMS Kassel</span><span style="--c:var(--ok)">Praxis '+EMP[state.emp].bei+'</span><span style="--c:var(--gold)">Thesis mit Praktikum 4</span></div>'+
+   '<div class="facts"><div><b>6</b><span>Semester</span></div><div><b>180</b><span>Credits</span></div><div><b>17</b><span>Module</span></div><div><b>5</b><span>Praktika</span></div><div><b>3</b><span>Monate Thesis</span></div><div><b>45</b><span>Min. Kolloquium</span></div></div>'+
+   '<p class="note" style="margin:12px 0 0">Vereinfachte Darstellung nach dem Modulbuch ab Wintersemester 2026/27, Urlaub und Prüfungswochen sind nicht eingezeichnet. Die Endnote besteht zu 70 Prozent aus der Theorie, zu 20 Prozent aus Thesis und Kolloquium und zu 10 Prozent aus der Praxis.</p>'+
+   '<button class="b3 ghost" id="studyGo" style="margin-top:12px">Fragen zum Studium üben</button>';
+  $("studyGo").onclick=()=>{const u=UNITS.find(x=>x.cat==="Das Studium");if(u){state.lastUnit=u.cat;save();startLesson(u.lessons[Math.max(0,nextLesson(u))]||u.items.slice(0,LESSON),u.cat,false,{path:true})}};
+  $("studyLinks").innerHTML=(window.STUDY_LINKS||[]).map(l=>linkRow(l,ICON.book)).join("");
   $("linksH").textContent=EMP[state.emp].name;$("empLinks").innerHTML=LINKS[state.emp].map(l=>linkRow(l)).join("");$("lawLinks").innerHTML=LINKS.law.map(l=>linkRow(l,ICON.law)).join("");
   if(document.activeElement!==$("free"))$("free").value=state.free;
 }
-$("dateIn").addEventListener("change",()=>{if(!$("dateIn").value)return;state.date=$("dateIn").value;state.morningDay="";state.after="";save();renderRead();renderTop();toast("Termin gespeichert")});
 $("free").addEventListener("input",e=>{state.free=e.target.value;save()});
 function exportText(){let s="Meine Antworten · "+EMP[state.emp].name+"\n\n";ALL.forEach(it=>{const n=(state.notes[it.id]||"").trim(),m=(state.memo[it.id]||"").trim();if(n||m){s+="• "+title(it)+"\n";if(n)s+=n+"\n";if(m)s+="Lernversion: "+m+"\n";s+="\n"}});if(state.free.trim())s+="Notizen\n"+state.free.trim()+"\n";return s}
 $("shareBtn").onclick=async()=>{const t=exportText();try{if(navigator.share){await navigator.share({title:"Meine Antworten",text:t});return}}catch(e){if(e&&e.name==="AbortError")return}try{await navigator.clipboard.writeText(t);toast("Text kopiert")}catch(e){toast("Teilen ist hier nicht möglich")}};
@@ -1635,9 +1709,11 @@ function confetti(){
   let t=0;(function f(){ctx.clearRect(0,0,innerWidth,innerHeight);t++;P.forEach(p=>{p.vy+=.4;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;if(t>60)p.a-=.02;ctx.save();ctx.globalAlpha=Math.max(p.a,0);ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);ctx.restore()});if(t<125)requestAnimationFrame(f);else ctx.clearRect(0,0,innerWidth,innerHeight)})();
 }
 function specialDay(){
-  const d=interview();if(!d)return;const dl=daysLeft(),k=dayKey();
-  if(dl===0&&new Date()<d&&state.morningDay!==k){state.morningDay=k;save();modal(MORNING.title,MORNING.msg,[[MORNING.button,""]],'<div style="width:110px">'+ordni("cheer")+'</div>')}
-  else if(new Date()>d&&dl>-14&&!state.after){modal("Wie ist es gelaufen?","Finn möchte wissen, wie dein Gespräch war.",Object.keys(AFTER).map(k2=>[AFTER[k2].label,k2==="good"?"ok":k2==="okay"?"mid":"ghost",()=>{state.after=k2;save();modal(AFTER[k2].title,AFTER[k2].msg,[["Danke","" ]],'<div style="width:110px">'+ordni("cheer")+'</div>')}]))}
+  const k=dayKey(),now=new Date();
+  const today=["lk","st"].find(e=>{const d=interview(e);return d&&daysLeft(e)===0&&now<d});
+  if(today&&state.morningDay!==k){state.morningDay=k;save();modal(MORNING.title,"Heute ist dein Gespräch "+EMP[today].bei+". "+MORNING.msg,[[MORNING.button,""]],'<div style="width:110px">'+ordni("cheer")+'</div>');return}
+  const past=["lk","st"].find(e=>{const d=interview(e);return d&&now>d&&daysLeft(e)>-14&&!state.after[e]});
+  if(past)modal("Wie ist es gelaufen?","Finn möchte wissen, wie dein Gespräch "+EMP[past].bei+" war.",Object.keys(AFTER).map(k2=>[AFTER[k2].label,k2==="good"?"ok":k2==="okay"?"mid":"ghost",()=>{state.after[past]=k2;save();modal(AFTER[k2].title,AFTER[k2].msg,[["Danke",""]],'<div style="width:110px">'+ordni("cheer")+'</div>')}]))
 }
 setInterval(()=>{renderTop();if(tab==="Learn")renderMsg()},60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){renderTop();specialDay()}});
