@@ -1,8 +1,8 @@
 // Hält alle Dateien der App im Cache, damit sie ohne Internet startet.
 // Nach Änderungen an den Dateien die Versionsnummer erhöhen.
-const CACHE = 'emsi-training-v37';
+const CACHE = 'emsi-training-v38';
 const FILES = ['./', './index.html', './manifest.webmanifest',
-               './icon-180.png', './icon-512.png'];
+               './icon-180-v4.png', './icon-192-v4.png', './icon-512-v4.png'];
 
 // Beim Installieren am Browser-Cache vorbei laden, sonst landet eine bis zu
 // 10 Minuten alte Fassung (GitHub Pages: max-age=600) im Offline-Speicher
