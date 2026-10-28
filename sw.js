@@ -1,8 +1,8 @@
 // Hält alle Dateien der App im Cache, damit sie ohne Internet startet.
 // Nach Änderungen an den Dateien die Versionsnummer erhöhen.
-const CACHE = 'rp-training-v22';
+const CACHE = 'kassel-training-v35';
 const FILES = ['./', './index.html', './manifest.webmanifest',
-               './app-icon-180-v3.png', './app-icon-192-v3.png', './app-icon-512-v3.png', './finn.jpg'];
+               './icon-180.png', './icon-512.png'];
 
 // Beim Installieren am Browser-Cache vorbei laden, sonst landet eine bis zu
 // 10 Minuten alte Fassung (GitHub Pages: max-age=600) im Offline-Speicher
