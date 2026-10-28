@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101217" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Kassel Training</title>
+<title>Emsi Training</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Kassel Training">
+<meta name="apple-mobile-web-app-title" content="Emsi Training">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1611,7 +1611,7 @@ function specialDay(){
 setInterval(()=>{renderTop();if(tab==="Learn")renderMsg()},60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){renderTop();specialDay()}});
 
-try{if(window.navigator.standalone||window.matchMedia("(display-mode: standalone)").matches){const s=$("splash");$("splashIn").innerHTML=ordni("cheer")+'<b>Kassel Training</b>';s.hidden=false;setTimeout(()=>s.classList.add("out"),1000);setTimeout(()=>{s.hidden=true},1600)}}catch(e){}
+try{if(window.navigator.standalone||window.matchMedia("(display-mode: standalone)").matches){const s=$("splash");$("splashIn").innerHTML=ordni("cheer")+'<b>Emsi Training</b>';s.hidden=false;setTimeout(()=>s.classList.add("out"),1000);setTimeout(()=>{s.hidden=true},1600)}}catch(e){}
 
 build();render();setTimeout(specialDay,1200);
 })();

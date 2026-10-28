@@ -1,6 +1,6 @@
 // Hält alle Dateien der App im Cache, damit sie ohne Internet startet.
 // Nach Änderungen an den Dateien die Versionsnummer erhöhen.
-const CACHE = 'kassel-training-v35';
+const CACHE = 'emsi-training-v36';
 const FILES = ['./', './index.html', './manifest.webmanifest',
                './icon-180.png', './icon-512.png'];
 
